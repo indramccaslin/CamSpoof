@@ -1,46 +1,46 @@
 # CamSpoof
 
-Modul **Xposed/LSPosed (Vector)** untuk melewati identitas *device* di **EXIF foto** yang diambil dari aplikasi kamera. Foto hasil jepret akan terlihat seperti diambil oleh device lain (contoh: "Xiaomi 18 Pro Max") tanpa mengubah identitas device secara global di sistem.
+An **Xposed/LSPosed (Vector)** module to spoof the *device identity* written into **photo EXIF** metadata by camera apps. Photos look as if they were taken on another device (e.g. "Xiaomi 18 Pro Max") without changing the device identity globally.
 
-## Fitur
+## Features
 
-- Ubah **Make / Model / Brand** (EXIF) foto kamera (MIUI camera, GCam, AGC, dan lainnya).
-- **Preset identitas** siap pakai, dipilih langsung dari app:
-  - `Default (tanpa spoof)` — pakai identitas asli perangkat ini (tidak di-spoof)
+- Changes EXIF **Make / Model / Brand** of photos (MIUI Camera, GCam, AGC, and others).
+- Ready-made **identity presets**, selected right from the app:
+  - `Default` — no spoofing (real device identity)
   - `Xiaomi 18 Pro Max`
   - `Xiaomi 17 Ultra`
   - `Xiaomi 15 Ultra`
-- **UI settings** di dalam APK (bukan lewat manager). Pilih preset → otomatis diterapkan & app kamera di-restart.
-- Hanya aktif di **proses aplikasi kamera** — tidak merusak `ro.product.*` di sistem, jadi app lain / SafetyNet fingerprint sistem tidak terpengaruh.
-- Menangani modifikasi otomatis GCam/Google Camera yang menambahkan codename `(device)` di belakang nama model (hook `ExifInterface`).
+- **Settings UI** built into the APK. Pick a preset → applied automatically and camera apps are restarted.
+- Active only inside **camera app processes** — system `ro.product.*` stays untouched, so other apps / the system fingerprint are unaffected.
+- Handles the `(device)` codename suffix that GCam / Google Camera appends to the model name (`ExifInterface` hook).
 
-## Persyaratan
+## Requirements
 
-- HP **root**: [KernelSU](https://kernelsu.org/) (atau Magisk/KernelSU) terpasang.
-- Framework **Vector** (fork LSPosed): jalur umum `/data/adb/zgisk_vector` + `/data/adb/lspd`. (LSPosed biasa juga seharusnya berfungsi.)
-- Tidak ada dependensi tambahan.
+- **Rooted** phone: [KernelSU](https://kernelsu.org/) (or Magisk / KernelSU) installed.
+- **Vector** framework (an LSPosed fork): typically `/data/adb/zgisk_vector` + `/data/adb/lspd`. (Stock LSPosed should also work.)
+- No other dependencies.
 
-## Cara Pasang
+## Installation
 
-### 1. Download APK
+### 1. Download the APK
 
-Ambil `CamSpoof.apk` dari halaman **[Releases](https://github.com/indramccaslin/CamSpoof/releases/latest)** → download asset `CamSpoof.apk`.
+Grab `CamSpoof.apk` from the **[Releases](https://github.com/indramccaslin/CamSpoof/releases/latest)** page.
 
-### 2. Install APK
+### 2. Install the APK
 
 ```sh
 adb install -r -g CamSpoof.apk
-# atau lewat file manager di HP
+# or install it via a file manager on the phone
 ```
 
-### 3. Aktifkan modul di Vector
+### 3. Enable the module in Vector
 
-- Buka app **Vector** (atau LSPosed).
-- Pilih modul **CamSpoof**.
-- Centang **Aktifkan / Enable**.
-- Set **scope** ke aplikasi kamera yang dipakai (tampilkan daftar "Kamera" / "All apps").
+- Open **Vector** (or LSPosed).
+- Select the **CamSpoof** module.
+- Toggle **Enable**.
+- Set its **scope** to the camera apps you use (pick "Cameras" / "All apps").
 
-Scope bawaan yang sudah dikenal modul (daftar lengkap ada di `src/.../CameraSpoof.java`):
+Built-in camera packages the module already knows (full list in `src/.../CameraSpoof.java`):
 
 ```
 com.android.camera          (MIUI camera)
@@ -49,39 +49,39 @@ com.agc.gcam84              (AGC)
 com.google.android.GoogleCamera
 org.codeaurora.snapcam
 com.sec.android.app.camera  (Samsung)
-... dan lainnya
+... and more
 ```
 
-> Lewat terminal (root), scope bisa diset manual:
+> You can also set the scope manually from a (rooted) terminal:
 > ```sh
 > su -c '/data/adb/lspd/cli scope set com.camspoof \
 >   com.android.camera/0 com.android.MGC/0 com.agc.gcam84/0'
 > ```
 
-### 4. Reboot / restart kamera
+### 4. Reboot / restart the camera apps
 
-Restart aplikasi kamera (jika belum ter-inject lagi). Reboot HP opsional namun paling aman.
+Restart your camera apps (in case they were not injected yet). A reboot is optional but safest.
 
-## Cara Pakai (Ganti Identitas)
+## Usage (Switching Identity)
 
-1. Buka app **CamSpoof** dari launcher.
-2. Pilih identitas yang diinginkan:
-   - `Default (tanpa spoof)` → spoof **mati** (identitas perangkat asli).
-   - `Xiaomi 18 Pro Max` / `Xiaomi 17 Ultra` / `Xiaomi 15 Ultra` → spoof aktif.
-3. Izin **root** diminta **sekali** (KernelSU/manager root) agar app bisa menulis konfigurasi & me-restart kamera otomatis.
-4. Buka aplikasi kamera, jepret. Cek EXIF foto → `Make`/`Model` sudah sesuai pilihan.
+1. Open the **CamSpoof** app from your launcher.
+2. Pick the identity you want:
+   - `Default` → spoofing **off** (real device identity).
+   - `Xiaomi 18 Pro Max` / `Xiaomi 17 Ultra` / `Xiaomi 15 Ultra` → spoofing on.
+3. Grant **root** the first time (KernelSU / root manager) so the app can write the config and restart the camera apps automatically.
+4. Open a camera app and take a photo. Check the EXIF → `Make` / `Model` now match your selection.
 
-### Verifikasi EXIF
+### Verify EXIF
 
 ```sh
-exiftool -Make -Model /sdcard/DCIM/Camera/<foto>.jpg
+exiftool -Make -Model /sdcard/DCIM/Camera/<photo>.jpg
 # Make  : Xiaomi
 # Model : Xiaomi 18 Pro Max
 ```
 
-## Konfigurasi (Lanjutan)
+## Advanced Configuration
 
-Modul membaca file `/data/local/tmp/camspoof_conf` (format `key=value`, 1 baris per key):
+The module reads `/data/local/tmp/camspoof_conf` (`key=value`, one per line):
 
 ```
 make=Xiaomi
@@ -89,21 +89,21 @@ model=Xiaomi 18 Pro Max
 brand=Xiaomi
 ```
 
-- `model` kosong atau `default` → spoof mati.
-- File ini ditulis otomatis oleh UI app ketika mengganti preset. Edit manual juga bisa (perlu root), lalu restart kamera.
+- An empty or `default` `model` → spoofing off.
+- This file is written automatically by the app UI whenever you change the preset. You can edit it manually (root needed), then restart the camera apps.
 
-## Cara Kerja
+## How It Works
 
-- `CameraSpoof` (entry Xposed) hanya berjalan di proses **aplikasi kamera** (whitelist `CAMERA_PKGS`), sehingga tidak mengubah identitas global.
-- Di proses tersebut:
-  1. Field statis `android.os.Build` (`MODEL`, `MANUFACTURER`, `BRAND`) ditimpa.
-  2. `SystemProperties.get/getString` untuk key `ro.product.*.model/manufacturer/brand` di-hook.
-  3. `ExifInterface.p(int,Object)` di-hook untuk menghapus sufiks codename `(device)` yang ditambahkan GCam/Google Camera.
-- Nilai identitas dibaca dari `/data/local/tmp/camspoof_conf` oleh tiap proses kamera saat di-load.
+- `CameraSpoof` (the Xposed entry) runs only inside **camera app processes** (whitelist `CAMERA_PKGS`), so the global identity is never changed.
+- Inside that process it:
+  1. Overrides the `android.os.Build` static fields (`MODEL`, `MANUFACTURER`, `BRAND`).
+  2. Hooks `SystemProperties.get/getString` for `ro.product.*.model/manufacturer/brand` keys.
+  3. Hooks `ExifInterface.p(int,Object)` to strip the `(device)` codename suffix added by GCam / Google Camera.
+- The identity values are read from `/data/local/tmp/camspoof_conf` by every camera process when it starts.
 
-## Build dari Source
+## Building from Source
 
-Persyaratan build: OpenJDK, Android `build-tools` (`aapt2`, `d8`, `zipalign`, `apksigner`), `android.jar`, dan Xposed API (`api-82.jar`).
+Build requirements: OpenJDK, Android `build-tools` (`aapt2`, `d8`, `zipalign`, `apksigner`), `android.jar`, and the Xposed API (`api-82.jar`).
 
 ```sh
 AJ=<path>/android.jar
@@ -127,18 +127,18 @@ apksigner sign --ks debug.keystore --ks-pass pass:android --key-pass pass:androi
   --out CamSpoof.apk build/aligned.apk
 ```
 
-## Struktur Project
+## Project Structure
 
 ```
-CamSpoof.apk                              → APK modul (release)
-src/com/opencode/camspoof/CameraSpoof.java   → entry Xposed (spoof + Exif hook)
-src/com/opencode/camspoof/SettingsActivity.java → UI pilih preset
-AndroidManifest.xml                        → manifest modul + activity
+CamSpoof.apk                              → module APK (release)
+src/com/camspoof/CameraSpoof.java          → Xposed entry (spoof + Exif hook)
+src/com/camspoof/SettingsActivity.java     → preset picker UI
+AndroidManifest.xml                        → module manifest + activity
 res/values/                                → label & xposedscope
-assets/xposed_init                         → daftar entry class Xposed
+assets/xposed_init                         → Xposed entry class list
 ```
 
-## Catatan
+## Notes
 
-- Modul ini adalah **proyek pribadi** untuk riset/pembelajaran. Identitas device tetap milik vendor; gunakan dengan bijak.
-- Perubahan identitas hanya terjadi pada **metadata EXIF** foto, bukan pada `ro.product.*` sistem atau hasil benchmark.
+- This is a **personal project** for research/learning. The device identity belongs to the vendor; use it responsibly.
+- Only **photo EXIF metadata** is affected — never the system `ro.product.*` or benchmark results.

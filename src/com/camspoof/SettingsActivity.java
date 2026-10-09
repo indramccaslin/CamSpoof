@@ -28,7 +28,7 @@ public class SettingsActivity extends Activity {
     private static final String KEY   = "device";
     private static final String CONF  = "/data/local/tmp/camspoof_conf";
 
-    private static final String DEFAULT_LABEL = "Default (tanpa spoof)";
+    private static final String DEFAULT_LABEL = "Default";
     private static final String[] OPTIONS = {
             DEFAULT_LABEL,
             "Xiaomi 18 Pro Max",
