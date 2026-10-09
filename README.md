@@ -54,7 +54,7 @@ com.sec.android.app.camera  (Samsung)
 
 > Lewat terminal (root), scope bisa diset manual:
 > ```sh
-> su -c '/data/adb/lspd/cli scope set com.opencode.camspoof \
+> su -c '/data/adb/lspd/cli scope set com.camspoof \
 >   com.android.camera/0 com.android.MGC/0 com.agc.gcam84/0'
 > ```
 

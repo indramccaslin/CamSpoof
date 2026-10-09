@@ -1,4 +1,4 @@
-package com.opencode.camspoof;
+package com.camspoof;
 
 import android.os.Build;
 
