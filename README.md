@@ -6,7 +6,7 @@ Modul **Xposed/LSPosed (Vector)** untuk melewati identitas *device* di **EXIF fo
 
 - Ubah **Make / Model / Brand** (EXIF) foto kamera (MIUI camera, GCam, AGC, dan lainnya).
 - **Preset identitas** siap pakai, dipilih langsung dari app:
-  - `Default (Xiaomi Mi 9)` — tanpa spoof (identitas asli)
+  - `Default (tanpa spoof)` — pakai identitas asli perangkat ini (tidak di-spoof)
   - `Xiaomi 18 Pro Max`
   - `Xiaomi 17 Ultra`
   - `Xiaomi 15 Ultra`
@@ -66,7 +66,7 @@ Restart aplikasi kamera (jika belum ter-inject lagi). Reboot HP opsional namun p
 
 1. Buka app **CamSpoof** dari launcher.
 2. Pilih identitas yang diinginkan:
-   - `Default (Xiaomi Mi 9)` → spoof **mati**.
+   - `Default (tanpa spoof)` → spoof **mati** (identitas perangkat asli).
    - `Xiaomi 18 Pro Max` / `Xiaomi 17 Ultra` / `Xiaomi 15 Ultra` → spoof aktif.
 3. Izin **root** diminta **sekali** (KernelSU/manager root) agar app bisa menulis konfigurasi & me-restart kamera otomatis.
 4. Buka aplikasi kamera, jepret. Cek EXIF foto → `Make`/`Model` sudah sesuai pilihan.

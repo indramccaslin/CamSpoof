@@ -28,7 +28,7 @@ public class SettingsActivity extends Activity {
     private static final String KEY   = "device";
     private static final String CONF  = "/data/local/tmp/camspoof_conf";
 
-    private static final String DEFAULT_LABEL = "Default (Xiaomi Mi 9)";
+    private static final String DEFAULT_LABEL = "Default (tanpa spoof)";
     private static final String[] OPTIONS = {
             DEFAULT_LABEL,
             "Xiaomi 18 Pro Max",
@@ -91,7 +91,7 @@ public class SettingsActivity extends Activity {
         root.addView(group);
 
         TextView note = new TextView(this);
-        note.setText("\"Default\" = tidak di-spoof (identitas asli Xiaomi Mi 9). "
+        note.setText("\"Default\" = tidak di-spoof (pakai identitas asli perangkat). "
                 + "Butuh akses root sekali untuk menulis konfigurasi.");
         note.setTextSize(11);
         note.setTextColor(Color.GRAY);
