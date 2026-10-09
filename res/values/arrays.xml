@@ -1,0 +1,27 @@
+<resources>
+    <string-array name="xposedscope">
+        <item>com.android.camera</item>
+        <item>com.android.camera2</item>
+        <item>com.miui.camera</item>
+        <item>com.xiaomi.camera</item>
+        <item>com.google.android.GoogleCamera</item>
+        <item>com.google.android.GoogleCameraGo</item>
+        <item>com.android.MGC</item>
+        <item>org.codeaurora.snapcam</item>
+        <item>net.sourceforge.opencamera</item>
+        <item>com.sec.android.app.camera</item>
+        <item>com.samsung.android.camera</item>
+        <item>com.oppo.camera</item>
+        <item>com.oplus.camera</item>
+        <item>com.oneplus.camera</item>
+        <item>com.huawei.camera</item>
+        <item>com.motorola.camera</item>
+        <item>com.motorola.camera2</item>
+        <item>com.sonyericsson.android.camera</item>
+        <item>com.asus.camera</item>
+        <item>com.nothing.camera</item>
+        <item>com.hmdglobal.app.camera</item>
+        <item>com.agc.gcam84</item>
+        <item>com.agc.gcam</item>
+    </string-array>
+</resources>
